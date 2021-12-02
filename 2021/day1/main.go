@@ -12,14 +12,30 @@ import (
 )
 
 func main() {
-	fmt.Println("Solving Sonar Sweep")
-	start := time.Now()
-	fmt.Printf("Part 1 Result: %v\n", determineCycledDepth(2))
-	p1Duration := time.Since(start)
-	fmt.Printf("Part 2 Result: %v\n", determineCycledDepth(4))
-	p2Duration := time.Since(start)
+	fmt.Println("\nSolving Sonar Sweep")
 	fmt.Println("---------------------")
-	fmt.Printf("Part 1 took %v. Part 2 took %v\n", p1Duration, p2Duration)
+
+	// Part 1
+	p1Start := time.Now()
+	p1Result := determineDepth()
+	p1Duration := time.Since(p1Start)
+	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
+
+	// Part 2
+	p2Start := time.Now()
+	p2Result := determineCycledDepth(4)
+	p2Duration := time.Since(p2Start)
+	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
+
+	// Part 1++
+	// Trying out solution for part 2 against part 1 prompt
+	// - outcome; definitely slower. p1 ~140µs and p1++ ~170µs (p2 ~170µs)
+	// - (ran on go v1.17, macos m1 pro)
+	p3Start := time.Now()
+	p3Result := determineCycledDepth(2)
+	p3Duration := time.Since(p3Start)
+	fmt.Println("---------------------")
+	fmt.Printf("Part 1++: %v (%v)\n", p3Result, p3Duration)
 }
 
 type DepthNode struct {
@@ -88,9 +104,7 @@ func parseInt(value string) (int64, error) {
 	I'm going for. If I make a linked list and keep it at length 4, I can cycle
 	the "three-measured" depths in and out of the list. So the above structs 'n methods
 	are for that. Also, linked list so that I don't have to keep moving/shifting elements to
-	the front of a queue/array/slice
-
-	EDIT: refactored so that part 1 uses the function created for part 2. *taps-temple*
+	the front of a queue/array/slice.
 */
 func determineCycledDepth(cycleLimit int8) int32 {
 	var numberOfIncreases int32
@@ -110,6 +124,29 @@ func determineCycledDepth(cycleLimit int8) int32 {
 			}
 			depthList.removeHead()
 		}
+	}
+
+	return numberOfIncreases
+}
+
+// original soltution to part 1
+func determineDepth() int32 {
+	var numberOfIncreases int32
+
+	inputFile := openInputFile()
+	defer inputFile.Close()
+
+	input := bufio.NewScanner(inputFile)
+	// Scanning once to skip over the first token/input
+	input.Scan()
+	previous, _ := parseInt(input.Text())
+
+	for input.Scan() {
+		current, _ := parseInt(input.Text())
+		if current > previous {
+			numberOfIncreases++
+		}
+		previous = current
 	}
 
 	return numberOfIncreases
