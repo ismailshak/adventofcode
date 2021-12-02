@@ -8,12 +8,18 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 )
 
 func main() {
 	fmt.Println("Solving Sonar Sweep")
+	start := time.Now()
 	fmt.Printf("Part 1 Result: %v\n", determineDepth())
+	p1Duration := time.Since(start)
 	fmt.Printf("Part 2 Result: %v\n", determineCycledDepth())
+	p2Duration := time.Since(start)
+	fmt.Println("---------------------")
+	fmt.Printf("Part 1 took %v. Part 2 took %v\n", p1Duration, p2Duration)
 }
 
 func openInputFile() *os.File {
