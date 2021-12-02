@@ -11,14 +11,20 @@ import (
 )
 
 func main() {
-	fmt.Println("Solving Dive!")
-	start := time.Now()
-	fmt.Printf("Part 1 Result: %v\n", determinePositionProduct())
-	p1Duration := time.Since(start)
-	fmt.Printf("Part 2 Result: %v\n", determineAimedPositionProduct())
-	p2Duration := time.Since(start)
-	fmt.Println("---------------------")
-	fmt.Printf("Part 1 took %v. Part 2 took %v\n", p1Duration, p2Duration)
+	fmt.Println("\nSolving Dive!")
+	fmt.Println("-------------")
+
+	// Part 1
+	p1Start := time.Now()
+	p1Result := determinePositionProduct()
+	p1Duration := time.Since(p1Start)
+	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
+
+	// Part 2
+	p2Start := time.Now()
+	p2Result := determineAimedPositionProduct()
+	p2Duration := time.Since(p2Start)
+	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
 }
 
 func openInputFile() *os.File {
