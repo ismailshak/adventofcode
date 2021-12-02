@@ -87,7 +87,8 @@ func parseInt(value string) (int64, error) {
 	fits the whole "i only care about the first and last elements inserted" approach
 	I'm going for. If I make a linked list and keep it at length 4, I can cycle
 	the "three-measured" depths in and out of the list. So the above structs 'n methods
-	are for that (I don't really need to store b and c, but what the heck)
+	are for that. Also, linked list so that I don't have to keep moving/shifting elements to
+	the front of a queue/array/slice
 
 	EDIT: refactored so that part 1 uses the function created for part 2. *taps-temple*
 */
