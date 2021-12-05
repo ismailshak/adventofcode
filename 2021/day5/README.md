@@ -75,3 +75,13 @@ Considering all lines from the above example would now produce the following dia
 You still need to determine the number of points where at least two lines overlap. In the above example, this is still anywhere in the diagram with a `2` or larger - now a total of **`12`** points.
 
 Consider all of the lines. **At how many points do at least two lines overlap?**
+
+## Part 3??
+
+>The elves inform you of another upcoming field of thermal vents.
+
+>You look out the window to check how bad the situation is, when you notice that something is off: The vents seem to form some kind of pattern! Sadly, no window in the submarine is big enough to get the complete picture. Can you help out?
+
+Found a follow up prompt on the advent of code subreddit ([link to post](https://www.reddit.com/r/adventofcode/comments/r9cf8g/2021_day_5_another_field_of_thermal_vents/)) - I got curious, and I already had a function to draw the original prompt.
+
+EDIT: ...lol ([saved image](./bonus-reddit.png))

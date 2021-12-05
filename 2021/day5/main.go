@@ -30,7 +30,10 @@ func main() {
 	fmt.Printf("Part 2 Result: %v (%v)\n", noOfPoints, p2Duration)
 
 	// Fun visualization
-	drawVents()
+	drawVents("vents.png", "./input.txt", 1000, 1000)
+
+	// Part 3?? (see README)
+	drawVents("reddit-bonus.png", "./reddit-input.txt", 2000, 2000)
 }
 
 type Orientation uint8
@@ -50,8 +53,8 @@ func (point *Point) ToString() string {
 	return strconv.Itoa(int(point.x)) + "," + strconv.Itoa(int(point.y))
 }
 
-func openInputFile() *os.File {
-	inputFile, err := os.Open("./input.txt")
+func openInputFile(fileName string) *os.File {
+	inputFile, err := os.Open(fileName)
 	if err != nil {
 		panic("Error. Failed to read input file.")
 	}
@@ -192,7 +195,7 @@ func buildSegment(pointFrequency *map[string]int, multiVentPoints *map[string]bo
 }
 
 func determinePoints(considerDiagonal bool) int {
-	inputFile := openInputFile()
+	inputFile := openInputFile("input.txt")
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
@@ -239,20 +242,20 @@ func drawLine(canvas *image.RGBA, start, end Point) {
 	}
 }
 
-func drawVents() {
-	inputFile := openInputFile()
+func drawVents(fileName, inputName string, width, length int) {
+	inputFile := openInputFile(inputName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
 
-	canvas := image.NewRGBA(image.Rect(0, 0, 1000, 1000))
+	canvas := image.NewRGBA(image.Rect(0, 0, width, length))
 
 	for input.Scan() {
 		start, end := parseLine(input.Text())
 		drawLine(canvas, start, end)
 	}
 
-	imageFile, err := os.Create("image.png")
+	imageFile, err := os.Create(fileName)
 	if err != nil {
 		panic(err)
 	}
@@ -261,5 +264,5 @@ func drawVents() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Image drawn.")
+	fmt.Println("Image drawn and saved to", fileName)
 }
