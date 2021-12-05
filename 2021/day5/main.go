@@ -4,6 +4,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"image"
+	"image/color"
+	"image/png"
 	"os"
 	"strconv"
 	"strings"
@@ -25,6 +28,9 @@ func main() {
 	noOfPoints = determinePoints8Axis() // with diagonals
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", noOfPoints, p2Duration)
+
+	// Fun visualization
+	drawVents()
 }
 
 type Orientation uint8
@@ -208,4 +214,52 @@ func determinePoints4Axis() int {
 // i.e. horizontal + vertical + diagonal
 func determinePoints8Axis() int {
 	return determinePoints(true)
+}
+
+//=========================================
+
+func drawLine(canvas *image.RGBA, start, end Point) {
+	pixelColor := color.RGBA{R: 233, G: 166, B: 166, A: 255}
+	if isVentHorizontal(start, end) {
+		for i := start.x; withinRange(i, HORIZONTAL, start, end); i += direction(HORIZONTAL, start, end) {
+			canvas.SetRGBA(int(i), int(start.y), pixelColor)
+		}
+	}
+
+	if isVentVertical(start, end) {
+		for j := start.y; withinRange(j, VERTICAL, start, end); j += direction(VERTICAL, start, end) {
+			canvas.SetRGBA(int(start.x), int(j), pixelColor)
+		}
+	}
+
+	if isVentDiagonal(start, end) {
+		for i, j := start.x, start.y; diagonalWithinRange(i, j, start, end); i, j = diagonalDirection(i, j, start, end) {
+			canvas.SetRGBA(int(i), int(j), pixelColor)
+		}
+	}
+}
+
+func drawVents() {
+	inputFile := openInputFile()
+	defer inputFile.Close()
+
+	input := bufio.NewScanner(inputFile)
+
+	canvas := image.NewRGBA(image.Rect(0, 0, 1000, 1000))
+
+	for input.Scan() {
+		start, end := parseLine(input.Text())
+		drawLine(canvas, start, end)
+	}
+
+	imageFile, err := os.Create("image.png")
+	if err != nil {
+		panic(err)
+	}
+
+	err = png.Encode(imageFile, canvas)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Image drawn.")
 }
