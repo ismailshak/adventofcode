@@ -67,11 +67,10 @@ func determineFishCount(noOfDays int) int {
 	// sort of pivoting the data
 	fishList := initFishList(input)
 
-	fmt.Println(fishList)
-
 	for day := 0; day < noOfDays; day++ {
 		// basically, if we "cycle" 0 -> 8, using [index mod 9] we can keep incrementing
-		// the target cell directly
+		// the target day indirectly (knowing generation span) and store the bare minimum amount
+		// of data to sum the total fish count
 		fishList[(day+7)%9] += fishList[day%9]
 	}
 
