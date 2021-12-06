@@ -84,4 +84,4 @@ Consider all of the lines. **At how many points do at least two lines overlap?**
 
 Found a follow up prompt on the advent of code subreddit ([link to post](https://www.reddit.com/r/adventofcode/comments/r9cf8g/2021_day_5_another_field_of_thermal_vents/)) - I got curious, and I already had a function to draw the original prompt.
 
-EDIT: ...lol ([saved image](./bonus-reddit.png))
+EDIT: ...lol ([saved image](./reddit-bonus.png))
