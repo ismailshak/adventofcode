@@ -46,15 +46,15 @@ func main() {
 
 	// Part 1
 	p1Start := time.Now()
-	syntaxErrorScore, incompleteLines := determineSyntaxErrorScore()
+	syntaxScore, incompleteStacks := determineSyntaxScore()
 	p1Duration := time.Since(p1Start)
-	fmt.Printf("Part 1 Result: %v (%v)\n", syntaxErrorScore, p1Duration)
+	fmt.Printf("Part 1 Result: %v (%v)\n", syntaxScore, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	p2Result := determineMiddleScore(incompleteLines)
+	autoCompScore := determineAutoCompleteScore(incompleteStacks)
 	p2Duration := time.Since(p2Start)
-	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
+	fmt.Printf("Part 2 Result: %v (%v)\n", autoCompScore, p2Duration)
 }
 
 //------------------------------
@@ -112,8 +112,8 @@ func isOpeningToken(token string) bool {
 	return ok
 }
 
-// returns a bool if line error'd (error is truthy), the token that caused the syntax error
-// and the stack at the end of "compiling"
+// returns a bool if line error'd (error is truthy here), the token that caused
+// the syntax error, and the stack at the end of "compiling"
 func compileLine(line string) (string, bool, Stack) {
 	tokens := strings.Split(line, "")
 	stack := Stack{}
@@ -125,7 +125,7 @@ func compileLine(line string) (string, bool, Stack) {
 			continue
 		}
 
-		// if we're on a closing token, and the top of the stack is it's opening pair,
+		// if we're on a closing token, and the top of the stack is it's opening counterpart,
 		// pop the token out of the stack and proceed (i.e. successfully matched a full pair)
 		openingPair := TOKEN_PAIRS_CLOSING[token]
 		if stack.Peek() == openingPair {
@@ -151,7 +151,7 @@ func syntaxScore(tokens map[string]int) int {
 	return sum
 }
 
-func determineSyntaxErrorScore() (int, []Stack) {
+func determineSyntaxScore() (int, []Stack) {
 	inputFile := openInputFile()
 	defer inputFile.Close()
 
@@ -185,24 +185,24 @@ func autoComplete(stack Stack) string {
 	return completionString
 }
 
-func calculateAutoCompleteScore(value string) int {
+func autoCompleteScore(completion string) int {
 	sum := 0
-	for _, char := range value {
+	for _, char := range completion {
 		sum *= 5
 		sum += TOKEN_AUTOCOMP_SCORE[string(char)]
 	}
 	return sum
 }
 
-func determineMiddleScore(incompleteStacks []Stack) int {
+func determineAutoCompleteScore(incompleteStacks []Stack) int {
 	autoCompleteScores := []int{}
 
 	for _, stack := range incompleteStacks {
 		completionString := autoComplete(stack)
-		autoCompleteScores = append(autoCompleteScores, calculateAutoCompleteScore(completionString))
+		autoCompleteScores = append(autoCompleteScores, autoCompleteScore(completionString))
 	}
 
 	sort.Ints(autoCompleteScores)
-	middleIndex := math.Floor(float64(len(autoCompleteScores) / 2)) // always odd number if lines
+	middleIndex := math.Floor(float64(len(autoCompleteScores) / 2)) // always odd number of lines
 	return autoCompleteScores[int(middleIndex)]
 }
