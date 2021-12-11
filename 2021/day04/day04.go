@@ -3,28 +3,31 @@
 // to an underlying array (with a little bit of extra metadata), so passing a pointer to a slice
 // as a func arg is literally useless. Clever and weird construct for dynamically sized arrays, ngl.
 // TODO: Read up on slices => come back and clean up.
-package main
+package day04
 
 import (
+	"aoc/util"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 )
 
+var INPUT_FILE string
+
 const (
-	INPUT_FILE = "./input.txt"
-	GRID_SIZE  = 5
-	RESET      = "\033[0m"
-	CYAN       = "\033[36m"
-	PURPLE     = "\033[35m"
+	GRID_SIZE = 5
+	RESET     = "\033[0m"
+	CYAN      = "\033[36m"
+	PURPLE    = "\033[35m"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Giant Squid")
 	fmt.Println("-------------------")
 	fmt.Println()
+
+	INPUT_FILE = inputFileName
 
 	// Part 1
 	p1Start := time.Now()
@@ -112,16 +115,6 @@ func (b *Board) Score(drawnNumber int32) int32 {
 	return sum * drawnNumber
 }
 
-func parseFile() []string {
-	file, err := os.ReadFile(INPUT_FILE)
-	if err != nil {
-		panic("Error. Failed to read file")
-	}
-
-	input := strings.Split(string(file), "\n")
-	return input
-}
-
 func parseInt(value string) int32 {
 	output, err := strconv.ParseInt(value, 10, 32)
 	if err != nil {
@@ -168,7 +161,7 @@ func createBoards(input []string) []Board {
 }
 
 func prepareBingo() ([]string, []Board) {
-	input := parseFile()
+	input := util.ReadFile(4, INPUT_FILE, "\n")
 	draw := strings.Split(input[0], ",")
 	boards := createBoards(input)
 

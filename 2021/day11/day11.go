@@ -1,47 +1,30 @@
 // Advent of Code Day 11: Dumbo Octopus
-package main
+package day11
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
-	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Dumbo Octopus")
 	fmt.Println("---------------------")
 	fmt.Println()
 
 	// Part 1
 	p1Start := time.Now()
-	p1Result := determineFlashes(100)
+	p1Result := determineFlashes(100, inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	p2Result := findStepWithMaxFlashes(1000) // idk some super large number
+	p2Result := findStepWithMaxFlashes(1000, inputFileName) // idk some super large number
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
-}
-
-func openInputFile() *os.File {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
-	return inputFile
-}
-
-func parseInt(value string) int {
-	output, err := strconv.ParseInt(value, 10, 32)
-	if err != nil {
-		panic(err)
-	}
-	return int(output)
 }
 
 func printGrid(grid *[10][10]int) {
@@ -113,8 +96,8 @@ func simulateFlashes(grid *[10][10]int) int {
 	return flashCount
 }
 
-func determineFlashes(steps int) int {
-	inputFile := openInputFile()
+func determineFlashes(steps int, inputFileName string) int {
+	inputFile := util.OpenInputFile(11, inputFileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
@@ -125,7 +108,7 @@ func determineFlashes(steps int) int {
 		input.Scan()
 		line := strings.Split(input.Text(), "")
 		for j := 0; j < 10; j++ {
-			grid[i][j] = parseInt(line[j])
+			grid[i][j] = util.ParseInt(line[j])
 		}
 	}
 
@@ -146,6 +129,6 @@ func determineFlashes(steps int) int {
 	return totalFlashes
 }
 
-func findStepWithMaxFlashes(steps int) int {
-	return determineFlashes(steps) + 1 // adding 1 because part 1's function started at step 0
+func findStepWithMaxFlashes(steps int, inputFileName string) int {
+	return determineFlashes(steps, inputFileName) + 1 // adding 1 because part 1's function started at step 0
 }

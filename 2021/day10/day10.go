@@ -1,11 +1,11 @@
 // Advent of Code Day 10: Syntax Scoring
-package main
+package day10
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
 	"math"
-	"os"
 	"sort"
 	"strings"
 	"time"
@@ -39,14 +39,14 @@ var TOKEN_AUTOCOMP_SCORE = map[string]int{
 	">": 4,
 }
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Syntax Scoring")
 	fmt.Println("----------------------")
 	fmt.Println()
 
 	// Part 1
 	p1Start := time.Now()
-	syntaxScore, incompleteStacks := determineSyntaxScore()
+	syntaxScore, incompleteStacks := determineSyntaxScore(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", syntaxScore, p1Duration)
 
@@ -99,14 +99,6 @@ func (s Stack) Print() {
 
 //-----------------------------
 
-func openInputFile() *os.File {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
-	return inputFile
-}
-
 func isOpeningToken(token string) bool {
 	_, ok := TOKEN_PAIRS_OPENING[token]
 	return ok
@@ -151,8 +143,8 @@ func syntaxScore(tokens map[string]int) int {
 	return sum
 }
 
-func determineSyntaxScore() (int, []Stack) {
-	inputFile := openInputFile()
+func determineSyntaxScore(inputFileName string) (int, []Stack) {
+	inputFile := util.OpenInputFile(10, inputFileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)

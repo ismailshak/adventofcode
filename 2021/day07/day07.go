@@ -1,65 +1,47 @@
 // Advent of Code Day 7: The Treachery of Whales
 // Bit of statistics in this one...
-package main
+package day07
 
 import (
+	"aoc/util"
 	"fmt"
 	"math"
-	"os"
 	"sort"
-	"strconv"
-	"strings"
 	"time"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving The Treachery of Whales")
 	fmt.Println("-------------------------------")
 	fmt.Println()
 
 	// Part 1
 	p1Start := time.Now()
-	p1Result := determineCheapestConstantMove()
+	p1Result := determineCheapestConstantMove(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	p2Result := determineCheapestLinearMove()
+	p2Result := determineCheapestLinearMove(inputFileName)
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
 }
 
-func readFile() []string {
-	file, err := os.ReadFile("./input.txt")
-	if err != nil {
-		panic(err)
-	}
-	return strings.Split(string(file), ",")
-}
-
-func parseInt(value string) int {
-	output, err := strconv.ParseInt(value, 10, 32)
-	if err != nil {
-		panic(err)
-	}
-	return int(output)
-}
-
 // part 1: constant fuel consumption
-func determineCheapestConstantMove() int {
-	input := readFile()
+func determineCheapestConstantMove(inputFileName string) int {
+	input := util.ReadFile(7, inputFileName, ",")
 	length := float64(len(input))
 
 	sort.SliceStable(input, func(i, j int) bool {
-		return parseInt(input[i]) < parseInt(input[j])
+		return util.ParseInt(input[i]) < util.ParseInt(input[j])
 	})
 
-	median := parseInt(input[int(math.Ceil(length/2))])
+	median := util.ParseInt(input[int(math.Ceil(length/2))])
 	totalFuel := 0
 
 	for _, position := range input {
-		fuelNeededToRelocate := float64(median - parseInt(position))
+		fuelNeededToRelocate := float64(median - util.ParseInt(position))
 		totalFuel += int(math.Abs(fuelNeededToRelocate))
 	}
 
@@ -79,20 +61,19 @@ func sumFuelSequence(start, end int) int {
 }
 
 // part 2: linearly increasing fuel consumption
-func determineCheapestLinearMove() int {
-	input := readFile()
+func determineCheapestLinearMove(inputFileName string) int {
+	input := util.ReadFile(7, inputFileName, ",")
 	length := float64(len(input))
 
 	sumOfPositions := 0
 	for _, position := range input {
-		sumOfPositions += parseInt(position)
+		sumOfPositions += util.ParseInt(position)
 	}
 
 	mean := int(math.Floor((float64(sumOfPositions)) / (length)))
 	totalFuel := 0
 	for _, position := range input {
-		newSum := sumFuelSequence(parseInt(position), mean)
-		totalFuel += newSum
+		totalFuel += sumFuelSequence(util.ParseInt(position), mean)
 	}
 
 	return totalFuel

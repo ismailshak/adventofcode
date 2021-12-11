@@ -1,29 +1,29 @@
 // AdventOfCode Day 1: Sonar Sweep.
 // Choosing to stream the data in, versus swallowing the whole input in-memory.
 // Choosing to exercise approaches I don't usually take in a professional setting, lol
-package main
+package day01
 
 import (
 	"bufio"
 	"fmt"
-	"os"
-	"strconv"
 	"time"
+
+	"aoc/util"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Sonar Sweep")
 	fmt.Println("---------------------")
 
 	// Part 1
 	p1Start := time.Now()
-	p1Result := determineDepth()
+	p1Result := determineDepth(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	p2Result := determineCycledDepth(4)
+	p2Result := determineCycledDepth(4, inputFileName)
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
 
@@ -32,14 +32,14 @@ func main() {
 	// - outcome; definitely slower. p1 ~140µs and p1++ ~170µs (p2 ~170µs)
 	// - (ran on go v1.17, macos m1 pro)
 	p3Start := time.Now()
-	p3Result := determineCycledDepth(2)
+	p3Result := determineCycledDepth(2, inputFileName)
 	p3Duration := time.Since(p3Start)
 	fmt.Println("---------------------")
 	fmt.Printf("Part 1++: %v (%v)\n", p3Result, p3Duration)
 }
 
 type DepthNode struct {
-	depth int64
+	depth int
 	next  *DepthNode
 }
 
@@ -58,7 +58,7 @@ func (list *LinkedList) isNewDepthGreater() bool {
 	return list.tail.isGreater(list.head)
 }
 
-func (list *LinkedList) addNode(value int64) {
+func (list *LinkedList) addNode(value int) {
 	depthNode := DepthNode{
 		depth: value,
 	}
@@ -84,19 +84,6 @@ func (list *LinkedList) removeHead() {
 	list.length--
 }
 
-func openInputFile() *os.File {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
-	return inputFile
-}
-
-// Why does .ParseInt always return int64? :thinking:
-func parseInt(value string) (int64, error) {
-	return strconv.ParseInt(value, 10, 32)
-}
-
 /*
 	If we're trying to determine if a+b+c < b+c+d then all we need to check for
 	is if a < d (since b and c cancel out there). Using a linked list because it
@@ -106,17 +93,17 @@ func parseInt(value string) (int64, error) {
 	are for that. Also, linked list so that I don't have to keep moving/shifting elements to
 	the front of a queue/array/slice.
 */
-func determineCycledDepth(cycleLimit int8) int32 {
+func determineCycledDepth(cycleLimit int8, fileName string) int32 {
 	var numberOfIncreases int32
 
-	inputFile := openInputFile()
+	inputFile := util.OpenInputFile(1, fileName)
 	defer inputFile.Close()
 
 	depthList := LinkedList{}
 	input := bufio.NewScanner(inputFile)
 
 	for input.Scan() {
-		depthValue, _ := parseInt(input.Text())
+		depthValue := util.ParseInt(input.Text())
 		depthList.addNode(depthValue)
 		if depthList.length == cycleLimit {
 			if depthList.isNewDepthGreater() {
@@ -130,19 +117,19 @@ func determineCycledDepth(cycleLimit int8) int32 {
 }
 
 // original soltution to part 1
-func determineDepth() int32 {
+func determineDepth(fileName string) int32 {
 	var numberOfIncreases int32
 
-	inputFile := openInputFile()
+	inputFile := util.OpenInputFile(1, fileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
 	// Scanning once to skip over the first token/input
 	input.Scan()
-	previous, _ := parseInt(input.Text())
+	previous := util.ParseInt(input.Text())
 
 	for input.Scan() {
-		current, _ := parseInt(input.Text())
+		current := util.ParseInt(input.Text())
 		if current > previous {
 			numberOfIncreases++
 		}

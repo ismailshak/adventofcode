@@ -1,55 +1,38 @@
 // Advent of Code Day 9: Smoke Basin
 // incomplete, no longer have bandwidth, come back to this one later and submit part 2.
-package main
+package day09
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Smoke Basin")
 	fmt.Println("-------------------")
 	fmt.Println()
 
 	// Part 1
 	p1Start := time.Now()
-	p1Result := determineRiskLevels()
+	p1Result := determineRiskLevels(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	p2Result := determineBasins()
+	p2Result := determineBasins(inputFileName)
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
-}
-
-func openInputFile() *os.File {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
-	return inputFile
-}
-
-func parseInt(value string) int {
-	i, e := strconv.ParseInt(value, 10, 32)
-	if e != nil {
-		panic(e)
-	}
-
-	return int(i)
 }
 
 func parseRow(value string) []int {
 	slice := []int{}
 	for _, char := range value {
-		slice = append(slice, parseInt(string(char)))
+		slice = append(slice, util.ParseInt(string(char)))
 	}
 
 	return slice
@@ -69,7 +52,7 @@ func getHeightAtIndex_String(i int, value string) int {
 		return 9
 	}
 
-	return parseInt(string(value[i]))
+	return util.ParseInt(string(value[i]))
 }
 
 func getHeightAtIndex_Slice(i int, value []int) int {
@@ -112,10 +95,14 @@ func sum(list []int) int {
 	return sum
 }
 
-func determineRiskLevels() int {
+func determineRiskLevels(inputFileName string) int {
 	// creating duplicate file buffers so I can spawn separate scanners, that read from
 	// different positions simultaneously
-	files := [3]*os.File{openInputFile(), openInputFile(), openInputFile()}
+	files := [3]*os.File{
+		util.OpenInputFile(9, inputFileName),
+		util.OpenInputFile(9, inputFileName),
+		util.OpenInputFile(9, inputFileName),
+	}
 	defer files[0].Close()
 	defer files[1].Close()
 	defer files[2].Close()
@@ -150,7 +137,7 @@ func createGrid(file []byte) [][]int {
 		points := strings.Split(line, "")
 		grid[i] = make([]int, 100)
 		for j, char := range points {
-			grid[i][j] = parseInt(char)
+			grid[i][j] = util.ParseInt(char)
 		}
 	}
 
@@ -169,14 +156,13 @@ func createGrid(file []byte) [][]int {
 //}
 
 // lazy, tired, swallowing the whole input into memory...
-func determineBasins() int {
-	file, err := os.ReadFile("./input.txt")
+func determineBasins(inputFileName string) int {
+	file, err := os.ReadFile(util.BuildPuzzlePath(9, inputFileName))
 	if err != nil {
 		panic(err)
 	}
 
 	grid := createGrid(file)
-	fmt.Println(grid)
 
 	for _, row := range grid {
 		for _, point := range row {

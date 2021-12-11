@@ -1,39 +1,31 @@
 // Advent of Code Day 8: Seven Segment Search
-package main
+package day08
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
 	"math"
-	"os"
 	"strings"
 	"time"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Seven Segment Search")
 	fmt.Println("-------------------------------")
 	fmt.Println()
 
 	// Part 1
 	p1Start := time.Now()
-	p1Result := determineSimpleDigitsCount()
+	p1Result := determineSimpleDigitsCount(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", p1Result, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	p2Result := determineOutputSum()
+	p2Result := determineOutputSum(inputFileName)
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", p2Result, p2Duration)
-}
-
-func openInputFile() *os.File {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
-	return inputFile
 }
 
 func parseInputLine(line string) ([]string, []string) {
@@ -57,8 +49,8 @@ func countOutputDigitFrequency(digitFrequency *map[int]int, outputDigits []strin
 	}
 }
 
-func determineSimpleDigitsCount() int {
-	inputFile := openInputFile()
+func determineSimpleDigitsCount(inputFileName string) int {
+	inputFile := util.OpenInputFile(8, inputFileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
@@ -157,8 +149,8 @@ func parseOutputValue(dict [10]string, digits []string) int {
 	return sum
 }
 
-func determineOutputSum() int {
-	inputFile := openInputFile()
+func determineOutputSum(inputFileName string) int {
+	inputFile := util.OpenInputFile(8, inputFileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)

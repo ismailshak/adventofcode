@@ -1,28 +1,28 @@
-package main
+// Advent of Code Day 3: Binary Diagnostics
+package day03
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
-	"os"
 	"strconv"
-	"strings"
 	"time"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Binary Diagnostics")
 	fmt.Println("--------------------------")
 
 	// Part 1
 	p1Start := time.Now()
-	power, gamma, epsilon := determinePower()
+	power, gamma, epsilon := determinePower(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1: (%v)\n", p1Duration)
 	fmt.Printf("\tPower - %v\n\tGamma - %v\n\tEpsilon - %v\n", power, gamma, epsilon)
 
 	// Part 2
 	p2Start := time.Now()
-	lifeSupport, oxygen, cO2 := determineLifeSupport()
+	lifeSupport, oxygen, cO2 := determineLifeSupport(inputFileName)
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2: (%v)\n", p2Duration)
 	fmt.Printf("\tLife Support - %v\n\tOxygen - %v\n\tCO2 - %v\n", lifeSupport, oxygen, cO2)
@@ -31,7 +31,7 @@ func main() {
 func binaryStringToInt(binValue string) int64 {
 	intValue, err := strconv.ParseInt(binValue, 2, 32)
 	if err != nil {
-		panic("Error. Failed to parse binary string")
+		panic(err)
 	}
 
 	return intValue
@@ -77,11 +77,8 @@ func frequencyToBinaryString(bitFrequency *[12]int32) string {
 	return commonBitsBinary
 }
 
-func determinePower() (power int64, gamma, epsilon string) {
-	inputFile, err := os.Open("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
+func determinePower(inputFileName string) (power int64, gamma, epsilon string) {
+	inputFile := util.OpenInputFile(3, inputFileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
@@ -144,13 +141,8 @@ func filterReadings(input []string, isOxygen bool, index int) string {
 	return filterReadings(filteredList, isOxygen, index+1)
 }
 
-func determineLifeSupport() (lifeSupport int64, oxygen, cO2 string) {
-	rawFile, err := os.ReadFile("./input.txt")
-	if err != nil {
-		panic("Error. Failed to read input file")
-	}
-
-	input := strings.Split(string(rawFile), "\n")
+func determineLifeSupport(inputFileName string) (lifeSupport int64, oxygen, cO2 string) {
+	input := util.ReadFile(3, inputFileName, "\n")
 
 	oxygen = filterReadings(input, true, 0)
 	cO2 = filterReadings(input, false, 0)

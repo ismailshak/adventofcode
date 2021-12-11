@@ -1,7 +1,8 @@
 // Advent of Code Day 5: Hydrothermal Venture
-package main
+package day05
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
 	"image"
@@ -13,27 +14,27 @@ import (
 	"time"
 )
 
-func main() {
+func Solve(inputFileName string) {
 	fmt.Println("\nSolving Hydrothermal Venture")
 	fmt.Println("----------------------------")
 
 	// Part 1
 	p1Start := time.Now()
-	noOfPoints := determinePoints4Axis()
+	noOfPoints := determinePoints4Axis(inputFileName)
 	p1Duration := time.Since(p1Start)
 	fmt.Printf("Part 1 Result: %v (%v)\n", noOfPoints, p1Duration)
 
 	// Part 2
 	p2Start := time.Now()
-	noOfPoints = determinePoints8Axis() // with diagonals
+	noOfPoints = determinePoints8Axis(inputFileName) // with diagonals
 	p2Duration := time.Since(p2Start)
 	fmt.Printf("Part 2 Result: %v (%v)\n", noOfPoints, p2Duration)
 
 	// Fun visualization
-	drawVents("vents.png", "./input.txt", 1000, 1000)
+	drawVents(util.BuildPuzzlePath(5, "vents.png"), inputFileName, 1000, 1000)
 
 	// Part 3?? (see README)
-	drawVents("reddit-bonus.png", "./reddit-input.txt", 2000, 2000)
+	drawVents(util.BuildPuzzlePath(5, "reddit-bonus.png"), "reddit-input.txt", 2000, 2000)
 }
 
 type Orientation uint8
@@ -45,33 +46,17 @@ const (
 )
 
 type Point struct {
-	x int32
-	y int32
+	x int
+	y int
 }
 
 func (point *Point) ToString() string {
 	return strconv.Itoa(int(point.x)) + "," + strconv.Itoa(int(point.y))
 }
 
-func openInputFile(fileName string) *os.File {
-	inputFile, err := os.Open(fileName)
-	if err != nil {
-		panic("Error. Failed to read input file.")
-	}
-	return inputFile
-}
-
-func parseInt(value string) int32 {
-	intValue, err := strconv.ParseInt(value, 10, 32)
-	if err != nil {
-		panic("Error. Failed to parse int")
-	}
-	return int32(intValue)
-}
-
-func parsePoint(point string) (int32, int32) {
+func parsePoint(point string) (int, int) {
 	pointParts := strings.Split(point, ",")
-	return parseInt(pointParts[0]), parseInt(pointParts[1])
+	return util.ParseInt(pointParts[0]), util.ParseInt(pointParts[1])
 }
 
 func parseLine(line string) (Point, Point) {
@@ -94,7 +79,7 @@ func isVentDiagonal(start, end Point) bool {
 	return !isVentHorizontal(start, end) && !isVentVertical(start, end)
 }
 
-func direction(orientation Orientation, start, end Point) int32 {
+func direction(orientation Orientation, start, end Point) int {
 	switch orientation {
 	case HORIZONTAL:
 		if start.x > end.x {
@@ -110,8 +95,8 @@ func direction(orientation Orientation, start, end Point) int32 {
 	panic("Error. Direction didn't match HOR/VER")
 }
 
-func diagonalDirection(i, j int32, start, end Point) (int32, int32) {
-	var nextX, nextY int32
+func diagonalDirection(i, j int, start, end Point) (int, int) {
+	var nextX, nextY int
 	if start.x > end.x {
 		nextX = -1
 	} else {
@@ -127,7 +112,7 @@ func diagonalDirection(i, j int32, start, end Point) (int32, int32) {
 	return i + nextX, j + nextY
 }
 
-func withinRange(index int32, orientation Orientation, start, end Point) bool {
+func withinRange(index int, orientation Orientation, start, end Point) bool {
 	switch orientation {
 	case HORIZONTAL:
 		if start.x > end.x {
@@ -145,7 +130,7 @@ func withinRange(index int32, orientation Orientation, start, end Point) bool {
 }
 
 // getting tired/lazy - just go with it
-func diagonalWithinRange(i, j int32, start, end Point) bool {
+func diagonalWithinRange(i, j int, start, end Point) bool {
 	var xCondition, yCondition bool
 	xDirection, yDirection := diagonalDirection(0, 0, start, end)
 
@@ -194,8 +179,8 @@ func buildSegment(pointFrequency *map[string]int, multiVentPoints *map[string]bo
 	}
 }
 
-func determinePoints(considerDiagonal bool) int {
-	inputFile := openInputFile("input.txt")
+func determinePoints(considerDiagonal bool, inputFileName string) int {
+	inputFile := util.OpenInputFile(5, inputFileName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
@@ -210,13 +195,13 @@ func determinePoints(considerDiagonal bool) int {
 }
 
 // i.e. horizontal + vertical
-func determinePoints4Axis() int {
-	return determinePoints(false)
+func determinePoints4Axis(inputFileName string) int {
+	return determinePoints(false, inputFileName)
 }
 
 // i.e. horizontal + vertical + diagonal
-func determinePoints8Axis() int {
-	return determinePoints(true)
+func determinePoints8Axis(inputFileName string) int {
+	return determinePoints(true, inputFileName)
 }
 
 //=========================================
@@ -243,7 +228,7 @@ func drawLine(canvas *image.RGBA, start, end Point) {
 }
 
 func drawVents(fileName, inputName string, width, length int) {
-	inputFile := openInputFile(inputName)
+	inputFile := util.OpenInputFile(5, inputName)
 	defer inputFile.Close()
 
 	input := bufio.NewScanner(inputFile)
