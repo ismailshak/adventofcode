@@ -1,4 +1,4 @@
-// Advent of Code Day 8: Smoke Basin
+// Advent of Code Day 9: Smoke Basin
 // incomplete, no longer have bandwidth, come back to this one later and submit part 2.
 package main
 
