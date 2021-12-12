@@ -31,7 +31,6 @@ func ParseInt(value string) int {
 	return int(output)
 }
 
-// Assumes source was run from root main.go. TODO: test in a binary build
 func BuildPuzzlePath(puzzleNumber int, file string) string {
 	rootDir, err := os.Getwd()
 	if err != nil {

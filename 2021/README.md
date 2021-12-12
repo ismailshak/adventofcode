@@ -4,12 +4,21 @@ Year of the Golang.
 
 ## To Run
 
+compile-and-run shortcut (no executable created);
 ```bash
-go run *.go -p <puzzle-number> -f <optional-input-file-override>
+go run . -p <puzzle-number> -f <optional-input-file-name>
+```
+
+otherwise;
+```bash
+go build
+```
+```bash
+./aoc -p <puzzle-number> -f <optional-input-file-override>
 ```
 
 
-## Intro
+# Intro
 
 You're minding your own business on a ship at sea when the overboard alarm goes off! You rush to see if you can help. Apparently, one of the Elves tripped and accidentally sent the sleigh keys flying into the ocean!
 
