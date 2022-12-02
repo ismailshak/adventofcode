@@ -24,6 +24,12 @@ enum RoundResult {
   LOSS = 0,
 }
 
+const inputToResult: Record<string, RoundResult> = {
+  X: RoundResult.LOSS,
+  Y: RoundResult.DRAW,
+  Z: RoundResult.WIN,
+};
+
 // For a response action to win against the opponent action, it's always going to be
 // the previous action in the enumerated version of the moves above
 // i.e. if response is PAPER, opponent has to be the previous move which is ROCK
@@ -75,4 +81,56 @@ const part1 = () => {
   console.log("Part 1: Total score is", totalScore);
 };
 
+const getInputToResult = (value: string) => {
+  if (!(value in inputToResult)) {
+    throw `Input parse error. Result value '${value}' not in map`;
+  }
+
+  return inputToResult[value];
+};
+
+const roundToAction = (round: string) => {
+  const parts = round.split(" ");
+  return {
+    opponent: inputToScore(parts[0]),
+    result: getInputToResult(parts[1]),
+  };
+};
+
+// To get the losing move, we need to find the previous action in the enumerated sequence
+// we need to start at 1 (so we subtract 2), then we add 1 back so that we just subtract 1 overall
+const getLosingMove = (opponent: MoveScore) => mod(opponent - 2, 3) + 1;
+// To get the winning move, we need the next action in the enumerated sequence, so we add 1 to the mod result
+const getWinningMove = (opponent: MoveScore) => mod(opponent, 3) + 1;
+
+const getResponseMove = (opponent: MoveScore, result: RoundResult) => {
+  if (result === RoundResult.DRAW) {
+    return opponent;
+  }
+
+  if (result === RoundResult.LOSS) {
+    return getLosingMove(opponent);
+  }
+
+  return getWinningMove(opponent);
+};
+
+const part2 = () => {
+  const rounds = input.trim().split("\n");
+
+  const totalScore = rounds.reduce((acc, round) => {
+    const { opponent, result } = roundToAction(round);
+
+    const response = getResponseMove(opponent, result);
+    const roundScore = response + result;
+    const totalResult = acc + roundScore;
+
+    return totalResult;
+  }, 0);
+
+  console.log("Part 2: Total score is", totalScore);
+};
+
 part1();
+console.log();
+part2();
