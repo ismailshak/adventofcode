@@ -1,6 +1,6 @@
-import { parseInput } from "@utils/input";
-import { mod } from "@utils/math";
-import { run } from "@utils/runner";
+import {parseInput} from "@utils/input";
+import {mod} from "@utils/math";
+import {run} from "@utils/runner";
 
 const input = parseInput(__dirname);
 
@@ -35,13 +35,9 @@ const inputToResult: Record<string, RoundResult> = {
 // the previous action in the enumerated version of the moves above
 // i.e. if response is PAPER, opponent has to be the previous move which is ROCK
 // i.e. if response is ROCK, opponent has to be the previous move which is SCISSOR (cycling around)
-const isWin = (opponent: MoveScore, response: MoveScore) =>
-  mod(response - opponent, 3) === 1;
+const isWin = (opponent: MoveScore, response: MoveScore) => mod(response - opponent, 3) === 1;
 
-const getGameResult = (
-  opponent: MoveScore,
-  response: MoveScore
-): RoundResult => {
+const getGameResult = (opponent: MoveScore, response: MoveScore): RoundResult => {
   if (opponent === response) {
     return RoundResult.DRAW;
   }
@@ -63,14 +59,14 @@ const inputToScore = (value: string) => {
 
 const roundToMoves = (round: string) => {
   const parts = round.split(" ");
-  return { opponent: inputToScore(parts[0]), response: inputToScore(parts[1]) };
+  return {opponent: inputToScore(parts[0]), response: inputToScore(parts[1])};
 };
 
 const part1 = () => {
   const rounds = input.trim().split("\n");
 
   const totalScore = rounds.reduce((acc, round) => {
-    const { opponent, response } = roundToMoves(round);
+    const {opponent, response} = roundToMoves(round);
 
     const gameResult = getGameResult(opponent, response);
     const roundResult = gameResult + response;
@@ -120,7 +116,7 @@ const part2 = () => {
   const rounds = input.trim().split("\n");
 
   const totalScore = rounds.reduce((acc, round) => {
-    const { opponent, result } = roundToAction(round);
+    const {opponent, result} = roundToAction(round);
 
     const response = getResponseMove(opponent, result);
     const roundScore = response + result;
@@ -133,7 +129,7 @@ const part2 = () => {
 };
 
 run(
-  { day: 2, title: "Rock Paper Scissors" },
-  { solution: part1, message: "Total score" },
-  { solution: part2, message: "Total score" }
+  {day: 2, title: "Rock Paper Scissors"},
+  {solution: part1, message: "Total score"},
+  {solution: part2, message: "Total score"}
 );

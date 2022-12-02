@@ -31,22 +31,14 @@ const logPuzzle = (part: number, result: number, puzzle: PuzzlePartBase) => {
   console.log();
 };
 
-export const run = (
-  opts: Options,
-  part1: PuzzlePartSync,
-  part2: PuzzlePartSync
-) => {
+export const run = (opts: Options, part1: PuzzlePartSync, part2: PuzzlePartSync) => {
   logTitle(opts);
 
   logPuzzle(1, part1.solution(), part1);
   logPuzzle(2, part2.solution(), part2);
 };
 
-export const runAsync = async (
-  opts: Options,
-  part1: PuzzlePartAsync,
-  part2: PuzzlePartAsync
-) => {
+export const runAsync = async (opts: Options, part1: PuzzlePartAsync, part2: PuzzlePartAsync) => {
   logTitle(opts);
 
   logPuzzle(1, await part1.solution(), part1);
