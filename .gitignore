@@ -1,0 +1,4 @@
+# Global git ignore
+
+# files
+*.DS_Store
