@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "1": "npm run --silent execute -- ./day01",
+    "2": "npm run --silent execute -- ./day02",
     "build": "tsc",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
