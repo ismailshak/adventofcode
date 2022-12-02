@@ -1,5 +1,6 @@
 import { parseInput } from "@utils/input";
 import { mod } from "@utils/math";
+import { run } from "@utils/runner";
 
 const input = parseInput(__dirname);
 
@@ -78,7 +79,7 @@ const part1 = () => {
     return totalResult;
   }, 0);
 
-  console.log("Part 1: Total score is", totalScore);
+  return totalScore;
 };
 
 const getInputToResult = (value: string) => {
@@ -128,9 +129,11 @@ const part2 = () => {
     return totalResult;
   }, 0);
 
-  console.log("Part 2: Total score is", totalScore);
+  return totalScore;
 };
 
-part1();
-console.log();
-part2();
+run(
+  { day: 2, title: "Rock Paper Scissors" },
+  { solution: part1, message: "Total score" },
+  { solution: part2, message: "Total score" }
+);

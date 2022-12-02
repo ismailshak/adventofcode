@@ -1,4 +1,5 @@
 import { parseInput } from "@utils/input";
+import { run } from "@utils/runner";
 
 const input = parseInput(__dirname);
 
@@ -27,8 +28,7 @@ const part1 = () => {
     { largest: 0, currentTotal: 0 }
   );
 
-  console.log("Part 1:");
-  console.log("Elf with the most calories has:", mostCalories.largest);
+  return mostCalories.largest;
 };
 
 const part2 = () => {
@@ -45,13 +45,11 @@ const part2 = () => {
     singleElfTotal += parseInt(line, 10);
   });
 
-  console.log("Part 2:");
-  console.log(
-    "Top three elves total",
-    sortedTotals[0] + sortedTotals[1] + sortedTotals[2]
-  );
+  return sortedTotals[0] + sortedTotals[1] + sortedTotals[2];
 };
 
-part1();
-console.log();
-part2();
+run(
+  { day: 1, title: "Calorie Counting" },
+  { solution: part1, message: "Elf with the most calories has" },
+  { solution: part2, message: "Sum of calories for top 3 elves" }
+);
