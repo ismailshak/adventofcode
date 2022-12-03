@@ -1,3 +1,5 @@
 # dirs
 node_modules
 
+# files
+*/input-test.txt
