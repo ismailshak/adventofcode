@@ -61,8 +61,52 @@ const part1 = () => {
   return sum;
 };
 
+const findBadge = (sack1: string, sack2: string, sack3: string) => {
+  const setA = new Set(sack1.split(""));
+  const setB = new Set(sack2.split(""));
+  const setC = new Set(sack3.split(""));
+  const intersection = new Set();
+
+  for (const item of setA) {
+    if (setB.has(item) && setC.has(item)) {
+      intersection.add(item);
+      break; // Assuming there's only ever 1 common item
+    }
+  }
+
+  if (intersection.size !== 1) {
+    throw `Intersection set did not have exactly 1 item: ${Array.from(intersection)}`;
+  }
+
+  return intersection.values().next().value as string;
+};
+
+const part2 = () => {
+  const sacks = input.trim().split("\n");
+
+  if (sacks.length % 3 !== 0) throw `Input is not divisible by 3`;
+
+  const {sum} = sacks.reduce(
+    (acc, sack, currentIndex) => {
+      if (acc.elfCount === 2) {
+        const badge = findBadge(sacks[currentIndex - 2], sacks[currentIndex - 1], sack);
+        const priority = getPriority(badge);
+        return {
+          sum: acc.sum + priority,
+          elfCount: 0,
+        };
+      }
+
+      return {sum: acc.sum, elfCount: acc.elfCount + 1};
+    },
+    {sum: 0, elfCount: 0}
+  );
+
+  return sum;
+};
+
 run(
   {day: 3, title: "Rucksack Reorganization"},
   {solution: part1, message: "Sum of common items"},
-  {solution: () => 0, message: "placeholder"}
+  {solution: part2, message: "Sum of badge priorities"}
 );
