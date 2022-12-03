@@ -4,9 +4,11 @@
   "description": "Advent Of Code puzzles",
   "main": "index.ts",
   "scripts": {
-    "1": "npm run --silent execute -- ./day01",
-    "2": "npm run --silent execute -- ./day02",
+    "all": "run-s -s -c day:*",
     "build": "tsc",
+    "day:1": "npm run --silent execute -- ./day01",
+    "day:2": "npm run --silent execute -- ./day02",
+    "day:3": "npm run --silent execute -- ./day03",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
@@ -24,5 +26,8 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }

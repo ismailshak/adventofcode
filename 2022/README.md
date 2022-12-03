@@ -4,9 +4,31 @@ Year of the Typescript.
 
 ## To Run
 
-- TODO
+**Requires nodejs v16.13.0**
 
-# Intro
+Install dependencies
+
+```bash
+npm ci
+```
+
+To run a specific puzzle
+
+```bash
+npm run day:<day>
+
+# e.g.
+npm run day:1
+npm run day:10
+```
+
+To run all puzzles
+
+```bash
+npm run all
+```
+
+## Intro
 
 Santa's reindeer typically eat regular reindeer food, but they need a lot of magical energy to deliver presents on Christmas. For that, their favorite snack is a special type of star fruit that only grows deep in the jungle. The Elves have brought you on their annual expedition to the grove where the fruit grows.
 
