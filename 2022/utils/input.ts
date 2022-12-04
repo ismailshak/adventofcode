@@ -10,3 +10,5 @@ export const parseInput = (cwd: string, isTest = false) =>
   fs.readFileSync(getInputPath(cwd, isTest), {
     encoding: "utf8",
   });
+
+export const inputToLines = (input: string) => input.trim().split("\n");

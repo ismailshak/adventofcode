@@ -11,6 +11,7 @@
     "day:1": "npm run --silent execute -- ./day01",
     "day:2": "npm run --silent execute -- ./day02",
     "day:3": "npm run --silent execute -- ./day03",
+    "day:4": "npm run --silent execute -- ./day04",
     "execute": "ts-node",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
