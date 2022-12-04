@@ -58,7 +58,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 2, title: "Camp Cleanup"},
+  {day: 4, title: "Camp Cleanup"},
   {solution: part1, message: "Number of pairs inside range"},
   {solution: part2, message: "Number of pairs overlapping"}
 );
