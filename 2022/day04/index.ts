@@ -36,10 +36,29 @@ const part1 = () => {
   return total;
 };
 
-const part2 = () => 0;
+// Whether range A overlaps with range B
+const doesRangeOverlap = (rangeA: SectionRange, rangeB: SectionRange) =>
+  rangeA[1] >= rangeB[0] && rangeA[0] <= rangeB[1];
+
+const part2 = () => {
+  const pairs = inputToLines(input);
+
+  const total = pairs.reduce((acc, pair) => {
+    const {first, second} = getAssignments(pair);
+    const overlaps = doesRangeOverlap(first, second);
+
+    if (overlaps) {
+      return acc + 1;
+    }
+
+    return acc;
+  }, 0);
+
+  return total;
+};
 
 run(
   {day: 2, title: "Camp Cleanup"},
   {solution: part1, message: "Number of pairs inside range"},
-  {solution: part2, message: "placeholder"}
+  {solution: part2, message: "Number of pairs overlapping"}
 );
