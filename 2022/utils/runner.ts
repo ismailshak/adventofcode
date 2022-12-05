@@ -3,8 +3,9 @@ interface Options {
   day: number;
 }
 
-type SolutionCallbackSync = () => number;
-type SolutionCallbackAsync = () => Promise<number>;
+type Answer = number | string;
+type SolutionCallbackSync = () => Answer;
+type SolutionCallbackAsync = () => Promise<Answer>;
 
 interface PuzzlePartBase {
   message: string;
@@ -25,7 +26,7 @@ const logTitle = (opts: Options) => {
   console.log();
 };
 
-const logPuzzle = (part: number, result: number, puzzle: PuzzlePartBase) => {
+const logPuzzle = (part: number, result: Answer, puzzle: PuzzlePartBase) => {
   console.log(`- Part ${part} -`);
   console.log(`${puzzle.message}:`, result);
   console.log();
