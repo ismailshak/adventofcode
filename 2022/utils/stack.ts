@@ -9,6 +9,10 @@ export default class Stack<T> {
     this.storage.push(item);
   }
 
+  pushMany(items: Array<T>) {
+    items.forEach((item) => this.storage.push(item));
+  }
+
   pop() {
     if (this.size() === 0) throw "attempted to pop an empty stack";
     return this.storage.pop() as string;

@@ -128,7 +128,25 @@ const part1 = () => {
   return stacks.map((stack) => stack.peek()).join("");
 };
 
-const part2 = () => 0;
+const part2 = () => {
+  const {setup, moves} = chunkInput();
+
+  const stacks = parseCrateSetup(setup);
+
+  moves.forEach((rawMove) => {
+    const move = parseMove(rawMove);
+    if (!move) return;
+
+    const crateHolder: Array<string> = [];
+    for (let i = 0; i < move.count; i++) {
+      crateHolder.push(stacks[move.from].pop());
+    }
+
+    stacks[move.to].pushMany(crateHolder.reverse());
+  });
+
+  return stacks.map((stack) => stack.peek()).join("");
+};
 
 run(
   {day: 5, title: "Supply Stacks"},
