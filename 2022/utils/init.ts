@@ -65,7 +65,7 @@ const init = async () => {
   const day = await digitPrompt("Day");
   const title = await textPrompt("Puzzle title");
 
-  createDir(day, title);
+  createDir(day, title?.trim());
 };
 
 (async () => {
