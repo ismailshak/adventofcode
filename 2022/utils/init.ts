@@ -3,7 +3,7 @@ import fs, {existsSync} from "node:fs";
 import path from "node:path";
 import {digitPrompt, textPrompt} from "./prompts";
 
-const getIndexContent = (day: number, title: string) => `import { inputToLines, parseInput } from "@utils/input";
+const getIndexContent = (day: number, title: string) => `import { parseInput } from "@utils/input";
 import { run } from "@utils/runner";
 
 const input = parseInput(__dirname, true);
@@ -26,10 +26,11 @@ const getReadmeContent = (day: number, title: string) => `# Day ${day}: ${title}
 
 `;
 
-const createDir = (day: number, title: string) => {
+const createSetup = (day: number, title: string) => {
   if (!day || !title) return;
 
-  const dirName = day < 10 ? `day0${day}` : `day${day}`;
+  const paddedDay = day.toString().padStart(2, "0");
+  const dirName = `day${paddedDay}`;
   const dirPath = path.join(process.cwd(), dirName);
 
   if (!fs.existsSync(dirPath)) {
@@ -56,16 +57,17 @@ const createDir = (day: number, title: string) => {
   }
 
   // Add package script and sort package.json (pkg set doesn't respect order)
-  execSync(`npm pkg set scripts."day:${day}"="npm run --silent execute -- ./${dirName}"`);
+  const script = `day:${paddedDay}`;
+  execSync(`npm pkg set scripts.${script}="npm run --silent execute -- ./${dirName}"`);
   execSync("npx --yes sort-package-json");
-  console.log("Script added:", `npm run day:${day}`);
+  console.log("Script added:", `npm run ${script}`);
 };
 
 const init = async () => {
   const day = await digitPrompt("Day");
   const title = await textPrompt("Puzzle title");
 
-  createDir(day, title?.trim());
+  createSetup(day, title?.trim());
 };
 
 (async () => {

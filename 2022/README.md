@@ -18,8 +18,8 @@ To run a specific puzzle
 npm run day:<day>
 
 # e.g.
-npm run day:1
-npm run day:10
+npm run day:01
+npm run day:12
 ```
 
 To run all puzzles
