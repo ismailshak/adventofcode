@@ -15,7 +15,7 @@ export default class Stack<T> {
 
   pop() {
     if (this.size() === 0) throw "attempted to pop an empty stack";
-    return this.storage.pop() as string;
+    return this.storage.pop() as T;
   }
 
   peek() {
