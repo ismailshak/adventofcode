@@ -151,5 +151,5 @@ const part2 = () => {
 run(
   {day: 5, title: "Supply Stacks"},
   {solution: part1, message: "Crates on the top of each stack"},
-  {solution: part2, message: "placeholder"}
+  {solution: part2, message: "Crates on the top of each stack with updated rules"}
 );
