@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 interface Options {
   title: string;
   day: number;
@@ -20,7 +22,8 @@ interface PuzzlePartAsync extends PuzzlePartBase {
 }
 
 const logTitle = (opts: Options) => {
-  const header = `Day ${opts.day} - ${opts.title}`;
+  const day = `Day ${opts.day}`;
+  const header = `🎄 ${chalk.bold(day)} - ${chalk.magenta(opts.title)} 🎄`;
   console.log(header);
   console.log(new Array(header.length).fill("-").join(""));
   console.log();
@@ -28,7 +31,7 @@ const logTitle = (opts: Options) => {
 
 const logPuzzle = (part: number, result: Answer, puzzle: PuzzlePartBase) => {
   console.log(`- Part ${part} -`);
-  console.log(`${puzzle.message}:`, result);
+  console.log(`${puzzle.message}:`, chalk.green(result));
   console.log();
 };
 
