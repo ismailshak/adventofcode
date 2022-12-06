@@ -23,9 +23,10 @@ interface PuzzlePartAsync extends PuzzlePartBase {
 
 const logTitle = (opts: Options) => {
   const day = `Day ${opts.day}`;
-  const header = `🎄 ${chalk.bold(day)} - ${chalk.magenta(opts.title)} 🎄`;
+  const header = `🎄 ${chalk.bold(day)} - ${chalk.bold.magenta(opts.title)} 🎄`;
+  const remainingCharLength = 6 + 3; // trees + dash
   console.log(header);
-  console.log(new Array(header.length).fill("-").join(""));
+  console.log(new Array(day.length + opts.title.length + remainingCharLength).fill("-").join(""));
   console.log();
 };
 
