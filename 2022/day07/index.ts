@@ -105,7 +105,20 @@ const part1 = () => {
     .reduce((sum, num) => sum + num, 0);
 };
 
-const part2 = () => 0;
+const part2 = () => {
+  const lines = inputToLines(input);
+
+  const fs = buildTree(lines);
+
+  const totals: any = {};
+  sumTree(fs, totals, "/");
+
+  const spaceNeeded = 30000000 - (70000000 - totals["/"]);
+
+  return Object.values<number>(totals)
+    .filter((num) => num >= spaceNeeded)
+    .sort((a, b) => (a > b ? 1 : -1))[0];
+};
 
 run(
   {day: 7, title: "No Space Left On Device"},
