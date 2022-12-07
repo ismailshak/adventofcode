@@ -1,8 +1,5 @@
-import {parseInput} from "@utils/input";
 import {mod} from "@utils/math";
 import {run} from "@utils/runner";
-
-const input = parseInput(__dirname);
 
 enum MoveScore {
   ROCK = 1,
@@ -62,7 +59,7 @@ const roundToMoves = (round: string) => {
   return {opponent: inputToScore(parts[0]), response: inputToScore(parts[1])};
 };
 
-const part1 = () => {
+const part1 = (input: string) => {
   const rounds = input.trim().split("\n");
 
   const totalScore = rounds.reduce((acc, round) => {
@@ -112,7 +109,7 @@ const getResponseMove = (opponent: MoveScore, result: RoundResult) => {
   return getWinningMove(opponent);
 };
 
-const part2 = () => {
+const part2 = (input: string) => {
   const rounds = input.trim().split("\n");
 
   const totalScore = rounds.reduce((acc, round) => {
@@ -129,7 +126,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 2, title: "Rock Paper Scissors"},
+  {cwd: __dirname, day: 2, title: "Rock Paper Scissors"},
   {solution: part1, message: "Total score"},
   {solution: part2, message: "Total score"}
 );

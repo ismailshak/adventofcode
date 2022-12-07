@@ -1,4 +1,3 @@
-import {parseInput} from "@utils/input";
 import {run} from "@utils/runner";
 import Stack from "@utils/stack";
 
@@ -16,8 +15,6 @@ interface Move {
   from: number;
   to: number;
 }
-
-const input = parseInput(__dirname);
 
 const getColumns = (row: string) => {
   const columns: Array<Column> = [];
@@ -71,7 +68,7 @@ const parseCrateSetup = (setup: Array<string>) => {
   return stacks;
 };
 
-const chunkInput = () => {
+const chunkInput = (input: string) => {
   const lines = input.split("\n");
 
   let splitIndex = 0;
@@ -111,8 +108,8 @@ const parseMove = (move: string): Move | undefined => {
   };
 };
 
-const part1 = () => {
-  const {setup, moves} = chunkInput();
+const part1 = (input: string) => {
+  const {setup, moves} = chunkInput(input);
 
   const stacks = parseCrateSetup(setup);
 
@@ -128,8 +125,8 @@ const part1 = () => {
   return stacks.map((stack) => stack.peek()).join("");
 };
 
-const part2 = () => {
-  const {setup, moves} = chunkInput();
+const part2 = (input: string) => {
+  const {setup, moves} = chunkInput(input);
 
   const stacks = parseCrateSetup(setup);
 
@@ -149,7 +146,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 5, title: "Supply Stacks"},
+  {cwd: __dirname, day: 5, title: "Supply Stacks"},
   {solution: part1, message: "Crates on the top of each stack"},
   {solution: part2, message: "Crates on the top of each stack with updated rules"}
 );

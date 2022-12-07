@@ -1,7 +1,4 @@
-import {parseInput} from "@utils/input";
 import {run} from "@utils/runner";
-
-const input = parseInput(__dirname);
 
 const isNewElf = (line: string) => line === "";
 const hasMoreCalories = (currentTotal: number, largest: number) => currentTotal > largest;
@@ -12,7 +9,7 @@ const pushAndSort = (item: number, array: Array<number>) => {
   return array.sort((a, b) => b - a);
 };
 
-const part1 = () => {
+const part1 = (input: string) => {
   const mostCalories = input.split("\n").reduce(
     ({largest, currentTotal}, line) => {
       if (isNewElf(line)) {
@@ -30,7 +27,7 @@ const part1 = () => {
   return mostCalories.largest;
 };
 
-const part2 = () => {
+const part2 = (input: string) => {
   let sortedTotals: Array<number> = [];
   let singleElfTotal = 0;
   const lines = input.split("\n");
@@ -48,7 +45,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 1, title: "Calorie Counting"},
+  {cwd: __dirname, day: 1, title: "Calorie Counting"},
   {solution: part1, message: "Elf with the most calories has"},
   {solution: part2, message: "Sum of calories for top 3 elves"}
 );

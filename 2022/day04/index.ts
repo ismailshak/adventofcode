@@ -1,9 +1,7 @@
-import {inputToLines, parseInput} from "@utils/input";
+import {inputToLines} from "@utils/input";
 import {run} from "@utils/runner";
 
 type SectionRange = [number, number];
-
-const input = parseInput(__dirname);
 
 const parseAssignment = (value: string) => value.split("-").map((id) => parseInt(id, 10)) as SectionRange;
 
@@ -19,7 +17,7 @@ const getAssignments = (pair: string) => {
 const isInRange = (rangeA: SectionRange, rangeB: SectionRange) =>
   (rangeA[0] <= rangeB[0] && rangeA[1] >= rangeB[1]) || (rangeA[0] >= rangeB[0] && rangeA[1] <= rangeB[1]);
 
-const part1 = () => {
+const part1 = (input: string) => {
   const pairs = inputToLines(input);
 
   const total = pairs.reduce((acc, pair) => {
@@ -40,7 +38,7 @@ const part1 = () => {
 const doesRangeOverlap = (rangeA: SectionRange, rangeB: SectionRange) =>
   rangeA[1] >= rangeB[0] && rangeA[0] <= rangeB[1];
 
-const part2 = () => {
+const part2 = (input: string) => {
   const pairs = inputToLines(input);
 
   const total = pairs.reduce((acc, pair) => {
@@ -58,7 +56,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 4, title: "Camp Cleanup"},
+  {cwd: __dirname, day: 4, title: "Camp Cleanup"},
   {solution: part1, message: "Number of pairs inside range"},
   {solution: part2, message: "Number of pairs overlapping"}
 );

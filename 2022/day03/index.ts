@@ -1,7 +1,4 @@
-import {parseInput} from "@utils/input";
 import {run} from "@utils/runner";
-
-const input = parseInput(__dirname);
 
 const getCompartments = (sack: string) => {
   const first = sack.substring(0, sack.length / 2);
@@ -47,7 +44,7 @@ const getPriority = (letter: string) => {
   throw `Character code '${code}' was not within the expected range`;
 };
 
-const part1 = () => {
+const part1 = (input: string) => {
   const sacks = input.trim().split("\n");
 
   const sum = sacks.reduce((acc, sack) => {
@@ -81,7 +78,7 @@ const findBadge = (sack1: string, sack2: string, sack3: string) => {
   return intersection.values().next().value as string;
 };
 
-const part2 = () => {
+const part2 = (input: string) => {
   const sacks = input.trim().split("\n");
 
   if (sacks.length % 3 !== 0) throw `Input is not divisible by 3`;
@@ -106,7 +103,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 3, title: "Rucksack Reorganization"},
+  {cwd: __dirname, day: 3, title: "Rucksack Reorganization"},
   {solution: part1, message: "Sum of common items"},
   {solution: part2, message: "Sum of badge priorities"}
 );

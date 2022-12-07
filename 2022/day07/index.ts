@@ -1,4 +1,4 @@
-import {inputToLines, parseInput} from "@utils/input";
+import {inputToLines} from "@utils/input";
 import {run} from "@utils/runner";
 
 const DIR_PLACEHOLDER = -1;
@@ -16,8 +16,6 @@ interface Command {
   command: string;
   arg: string;
 }
-
-const input = parseInput(__dirname);
 
 const isCommand = (line: string) => line.startsWith("$");
 const isCd = (line: string) => line.startsWith("$ cd");
@@ -91,7 +89,7 @@ const sumTree = (tree: Record<string, any>, totals: Record<string, any>, dir: st
   return total;
 };
 
-const part1 = () => {
+const part1 = (input: string) => {
   const lines = inputToLines(input);
 
   const fs = buildTree(lines);
@@ -105,7 +103,7 @@ const part1 = () => {
     .reduce((sum, num) => sum + num, 0);
 };
 
-const part2 = () => {
+const part2 = (input: string) => {
   const lines = inputToLines(input);
 
   const fs = buildTree(lines);
@@ -121,7 +119,7 @@ const part2 = () => {
 };
 
 run(
-  {day: 7, title: "No Space Left On Device"},
+  {cwd: __dirname, day: 7, title: "No Space Left On Device"},
   {solution: part1, message: "Total size of directories with less than 100000 space"},
   {solution: part2, message: "placeholder"}
 );

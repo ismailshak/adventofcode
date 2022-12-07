@@ -3,17 +3,14 @@ import fs, {existsSync} from "node:fs";
 import path from "node:path";
 import {digitPrompt, textPrompt} from "./prompts";
 
-const getIndexContent = (day: number, title: string) => `import { parseInput } from "@utils/input";
-import { run } from "@utils/runner";
+const getIndexContent = (day: number, title: string) => `import { run } from "@utils/runner";
 
-const input = parseInput(__dirname, true);
+const part1 = (input: string) => 0
 
-const part1 = () => 0
-
-const part2 = () => 0;
+const part2 = (input: string) => 0;
 
 run(
-  {day: ${day}, title: "${title}"},
+  {cwd: __dirname, day: ${day}, title: "${title}", mock: true},
   {solution: part1, message: "placeholder"},
   {solution: part2, message: "placeholder"}
 );
