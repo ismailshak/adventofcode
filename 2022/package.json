@@ -16,6 +16,7 @@
     "day:06": "npm run --silent execute -- ./day06",
     "day:07": "npm run --silent execute -- ./day07",
     "day:08": "npm run --silent execute -- ./day08",
+    "day:09": "npm run --silent execute -- ./day09",
     "execute": "ts-node",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
