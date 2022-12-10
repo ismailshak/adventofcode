@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import {parseInput} from "@utils/input";
+import {performance} from "perf_hooks";
 
 interface Options {
   cwd: string;
@@ -33,24 +34,35 @@ const logTitle = (opts: Options) => {
   console.log();
 };
 
-const logPuzzle = (part: number, result: Answer, puzzle: PuzzlePartBase) => {
+const timeTakenToString = (start: number, end: number) => {
+  const diff = end - start;
+  return diff.toFixed(3);
+};
+
+const logPuzzle = async (part: number, input: string, puzzle: PuzzlePartSync | PuzzlePartAsync) => {
   console.log(`- Part ${part} -`);
-  console.log(`${puzzle.message}:`, chalk.green(result));
+
+  const start = performance.now();
+  const result = await puzzle.solution(input);
+  const end = performance.now();
+
+  console.log(`${puzzle.message}:`, chalk.green(result), chalk.yellow(`(${timeTakenToString(start, end)}ms)`));
+  //console.log(chalk.yellow(`(${timeTakenToString(start, end)}ms)`))
   console.log();
 };
 
-export const run = (opts: Options, part1: PuzzlePartSync, part2: PuzzlePartSync) => {
+export const run = async (opts: Options, part1: PuzzlePartSync, part2: PuzzlePartSync) => {
   const input = parseInput(opts.cwd, opts.mock);
   logTitle(opts);
 
-  logPuzzle(1, part1.solution(input), part1);
-  logPuzzle(2, part2.solution(input), part2);
+  await logPuzzle(1, input, part1);
+  await logPuzzle(2, input, part2);
 };
 
 export const runAsync = async (opts: Options, part1: PuzzlePartAsync, part2: PuzzlePartAsync) => {
   const input = parseInput(opts.cwd, opts.mock);
   logTitle(opts);
 
-  logPuzzle(1, await part1.solution(input), part1);
-  logPuzzle(2, await part2.solution(input), part2);
+  await logPuzzle(1, input, part1);
+  await logPuzzle(2, input, part2);
 };
