@@ -121,5 +121,5 @@ const part2 = (input: string) => {
 run(
   {cwd: __dirname, day: 7, title: "No Space Left On Device"},
   {solution: part1, message: "Total size of directories with less than 100000 space"},
-  {solution: part2, message: "placeholder"}
+  {solution: part2, message: "Total size of smallest directory that would free up space"}
 );
