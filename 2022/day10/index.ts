@@ -54,10 +54,32 @@ const part1 = (input: string) => {
   return strengths.reduce((acc, strength) => acc + strength, 0);
 };
 
-const part2 = (input: string) => 0;
+const generateSprites = (cycles: Array<number>) =>
+  cycles.map((_: number, i: number) => {
+    return new Array(3).fill(cycles[i] - 1)
+      .map((x, i) => x + i)
+      .includes(i % 40) ? '#' : '.'
+  })
+
+const drawSprites = (sprites: Array<"#" | ".">) =>
+  sprites.reduce((acc, char, index) => acc + char + ((index + 1) % 40 === 0 ? "\n" : ""), "")
+
+const part2 = (input: string) => {
+  const commands = inputToLines(input);
+  const registerPerCycle: Array<number> = [1];
+
+  commands.forEach((line) => {
+    const {command, value} = parseCommand(line);
+    handleCommand(registerPerCycle, command, value);
+  });
+
+  const sprites = generateSprites(registerPerCycle);
+  const drawing = drawSprites(sprites);
+  return "\n" + drawing + "\n";
+};
 
 run(
   {cwd: __dirname, day: 10, title: "Cathode-Ray Tube", mock: false},
   {solution: part1, message: "Sum of signal strengths"},
-  {solution: part2, message: "placeholder"}
+  {solution: part2, message: "Eight capital letters produced on CRT"}
 );
