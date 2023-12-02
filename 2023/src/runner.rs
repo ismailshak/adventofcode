@@ -1,4 +1,5 @@
 use crate::day01;
+use crate::day02;
 use crate::puzzle::Puzzle;
 use colored::Colorize;
 
@@ -54,6 +55,7 @@ where
 pub fn run(day: &str) {
     let puzzle = match day {
         "1" | "01" => Some(PuzzleResult::Int(day01::get())),
+        "2" | "02" => Some(PuzzleResult::Int(day02::get())),
         _ => None,
     };
 
