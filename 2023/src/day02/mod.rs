@@ -62,11 +62,42 @@ fn part1() -> u32 {
         .sum::<u32>()
 }
 
+fn part2() -> u32 {
+    let red_regex = Regex::new(r"(\d+) red").unwrap();
+    let green_regex = Regex::new(r"(\d+) green").unwrap();
+    let blue_regex = Regex::new(r"(\d+) blue").unwrap();
+
+    include_str!("./input.txt")
+        .lines()
+        .map(|l| {
+            let reds = red_regex
+                .captures_iter(l)
+                .map(|c| extract_count(&c))
+                .max()
+                .unwrap_or(0);
+
+            let greens = green_regex
+                .captures_iter(l)
+                .map(|c| extract_count(&c))
+                .max()
+                .unwrap_or(0);
+
+            let blues = blue_regex
+                .captures_iter(l)
+                .map(|c| extract_count(&c))
+                .max()
+                .unwrap_or(0);
+
+            reds * greens * blues
+        })
+        .sum::<u32>()
+}
+
 pub fn get<'a>() -> Puzzle<'a, u32> {
     Puzzle {
         day: 2,
         title: "Cube Conundrum",
         part1: PuzzlePart::new("Sum of valid games", part1),
-        part2: PuzzlePart::new("N/A", || 0),
+        part2: PuzzlePart::new("Sum of minimum cubes", part2),
     }
 }
