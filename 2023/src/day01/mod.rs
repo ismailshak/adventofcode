@@ -1,3 +1,5 @@
+use crate::puzzle::{Puzzle, PuzzlePart};
+
 fn part1() -> u32 {
     include_str!("./input.txt")
         .lines()
@@ -43,27 +45,11 @@ fn part2() -> u32 {
         .sum::<u32>()
 }
 
-pub fn execute() {
-    println!("Day 1: Trebuchet?!");
-    println!("------------------");
-
-    let start = std::time::Instant::now();
-    let calibration_sum = part1();
-    let duration = start.elapsed().as_nanos();
-
-    println!(
-        "Calibration Sum pt.1: {} ({:.3}ms)", // 3 decimal places printed
-        calibration_sum,
-        duration as f64 / 1_000_000_f64
-    );
-
-    let start = std::time::Instant::now();
-    let calibration_sum = part2();
-    let duration = start.elapsed().as_nanos();
-
-    println!(
-        "Calibration Sum pt.2: {} ({:.3}ms)",
-        calibration_sum,
-        duration as f64 / 1_000_000_f64
-    );
+pub fn get<'a>() -> Puzzle<'a, u32> {
+    Puzzle {
+        day: 1,
+        title: "Trebuchet?!",
+        part1: PuzzlePart::new("Sum of digit calibration values", part1),
+        part2: PuzzlePart::new("Sum of all calibration values", part2),
+    }
 }

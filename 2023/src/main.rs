@@ -1,12 +1,14 @@
 mod day01;
+mod puzzle;
+mod runner;
 
 fn main() {
-    let day = std::env::args()
-        .nth(1)
-        .expect("Pick a specific day to execute: cargo run 01");
+    let day = std::env::args().nth(1).unwrap_or_else(|| "".to_string());
 
-    match day.as_str() {
-        "1" | "01" => day01::execute(),
-        x => println!("{} is not implemented yet", x),
+    if day.is_empty() {
+        eprintln!("Please provide a day to run e.g. `cargo run 1`");
+        std::process::exit(1);
     }
+
+    runner::run(&day);
 }
