@@ -12,6 +12,7 @@ import (
 	"aoc/day09"
 	"aoc/day10"
 	"aoc/day11"
+	"aoc/day12"
 	"fmt"
 )
 
@@ -42,7 +43,7 @@ func Run(puzzleNumber int, inputFileName string) {
 	case 11:
 		day11.Solve(inputFileName)
 	case 12:
-		fmt.Println("No puzzle for this day yet")
+		day12.Solve(inputFileName)
 	case 13:
 		fmt.Println("No puzzle for this day yet")
 	case 14:
