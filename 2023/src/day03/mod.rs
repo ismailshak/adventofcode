@@ -52,11 +52,60 @@ fn part1() -> u32 {
         .sum::<u32>()
 }
 
+fn find_gear_numbers(r: &Regex, location: usize, line: &str) -> Vec<u32> {
+    r.find_iter(line)
+        .filter_map(|m| {
+            if !is_adjacent(location, m.start(), m.end()) {
+                return None;
+            }
+
+            m.as_str().parse::<u32>().ok()
+        })
+        .collect::<Vec<u32>>()
+}
+
+fn part2() -> u32 {
+    let lines: Vec<&str> = include_str!("input.txt").lines().collect();
+    let num_regex = Regex::new(r"\d+").unwrap();
+
+    lines
+        .windows(3)
+        .map(|w| {
+            w.get(1)
+                .unwrap()
+                .chars()
+                .enumerate()
+                .filter_map(|(i, c)| {
+                    if c != '*' {
+                        return None;
+                    }
+
+                    let top = find_gear_numbers(&num_regex, i, w.get(0).unwrap());
+                    let mid = find_gear_numbers(&num_regex, i, w.get(1).unwrap());
+                    let bottom = find_gear_numbers(&num_regex, i, w.get(2).unwrap());
+
+                    let non_zero_values: Vec<u32> = vec![top, mid, bottom]
+                        .into_iter()
+                        .flatten()
+                        .filter(|x| *x != 0)
+                        .collect();
+
+                    if non_zero_values.len() != 2 {
+                        return None;
+                    }
+
+                    Some(non_zero_values.iter().fold(1, |acc, x| acc * x))
+                })
+                .sum::<u32>()
+        })
+        .sum::<u32>()
+}
+
 pub fn get<'a>() -> Puzzle<'a, u32> {
     Puzzle {
         day: 1,
         title: "Gear Ratios",
         part1: PuzzlePart::new("Sum of all part numbers", part1),
-        part2: PuzzlePart::new("N/A", || 0),
+        part2: PuzzlePart::new("Sum of all gear numbers", part2),
     }
 }
