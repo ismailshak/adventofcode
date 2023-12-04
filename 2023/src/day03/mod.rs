@@ -103,7 +103,7 @@ fn part2() -> u32 {
 
 pub fn get<'a>() -> Puzzle<'a, u32> {
     Puzzle {
-        day: 1,
+        day: 3,
         title: "Gear Ratios",
         part1: PuzzlePart::new("Sum of all part numbers", part1),
         part2: PuzzlePart::new("Sum of all gear numbers", part2),
