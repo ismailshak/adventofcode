@@ -2,6 +2,7 @@ use crate::day01;
 use crate::day02;
 use crate::day03;
 use crate::day04;
+use crate::day05;
 use crate::puzzle::Puzzle;
 use colored::Colorize;
 
@@ -60,6 +61,7 @@ pub fn run(day: &str) {
         "2" | "02" => Some(PuzzleResult::Int(day02::get())),
         "3" | "03" => Some(PuzzleResult::Int(day03::get())),
         "4" | "04" => Some(PuzzleResult::Int(day04::get())),
+        "5" | "05" => Some(PuzzleResult::Int(day05::get())),
         _ => None,
     };
 
