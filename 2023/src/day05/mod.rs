@@ -1,4 +1,5 @@
 use crate::puzzle::{Puzzle, PuzzlePart};
+use itertools::Itertools;
 use regex::Regex;
 
 fn parse_digits(r: &Regex, line: &str) -> Vec<u32> {
@@ -67,11 +68,70 @@ fn part1() -> u32 {
     *values.iter().min().unwrap()
 }
 
+fn parse_seed_ranges(r: &Regex, line: &str) -> Vec<u32> {
+    let ranges = parse_digits(r, line);
+
+    let mut seeds = Vec::new();
+
+    ranges.iter().chunks(2).into_iter().for_each(|c| {
+        let mut iter = c.into_iter();
+        let start = *iter.next().unwrap();
+        let end = *iter.next().unwrap() + start;
+        for i in start..end {
+            seeds.push(i);
+        }
+    });
+
+    seeds
+}
+
+fn part2() -> u32 {
+    let digit_regex = Regex::new(r"(\d+)").unwrap();
+    let mut values = Vec::new();
+    let mut category_state = Vec::new();
+
+    include_str!("input.txt")
+        .lines()
+        .enumerate()
+        .for_each(|(i, l)| {
+            if i == 0 {
+                // Initialize transform with initial set of seed numbers
+                values = parse_seed_ranges(&digit_regex, l);
+                category_state = vec![false; values.len()];
+                return;
+            }
+
+            // New lines mark the end of a mapping category, so we reset statuses
+            if l.is_empty() {
+                category_state = vec![false; values.len()];
+                return;
+            }
+
+            // If no digits, then this is a mapping header line
+            if !digit_regex.is_match(l) {
+                return;
+            }
+
+            // Otherwise, we compute the mapping ranges
+            let mapping = parse_digits(&digit_regex, l);
+
+            apply_transformations(
+                &mut values,
+                &mut category_state,
+                mapping[0],
+                mapping[1],
+                mapping[2],
+            );
+        });
+
+    *values.iter().min().unwrap()
+}
+
 pub fn get<'a>() -> Puzzle<'a, u32> {
     Puzzle {
         day: 5,
         title: "If You Give A Seed A Fertilizer",
         part1: PuzzlePart::new("Lowest location number", part1),
-        part2: PuzzlePart::new("N/A", || 0),
+        part2: PuzzlePart::new("Lowest location for ranges", part2),
     }
 }
